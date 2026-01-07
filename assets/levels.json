@@ -1,0 +1,248 @@
+{
+  "levels": [
+    {
+      "level_number": 1,
+      "name": "Beginner's Leap",
+      "is_free": true,
+      "unlock_requirement": "none",
+      "difficulty": 0.1,
+      "time_limit_seconds": 60,
+      "target_score": 100,
+      "obstacles": {
+        "type": "static_platforms",
+        "count": 5,
+        "speed": 0
+      },
+      "collectibles": {
+        "type": "coins",
+        "count": 10,
+        "value": 10
+      },
+      "special_features": [],
+      "background_theme": "grassy_meadow",
+      "music_track": "level_1_theme"
+    },
+    {
+      "level_number": 2,
+      "name": "Jumping Hurdles",
+      "is_free": true,
+      "unlock_requirement": "none",
+      "difficulty": 0.2,
+      "time_limit_seconds": 90,
+      "target_score": 200,
+      "obstacles": {
+        "type": "moving_platforms",
+        "count": 8,
+        "speed": 2
+      },
+      "collectibles": {
+        "type": "gems",
+        "count": 15,
+        "value": 20
+      },
+      "special_features": [],
+      "background_theme": "grassy_meadow",
+      "music_track": "level_2_theme"
+    },
+    {
+      "level_number": 3,
+      "name": "Tricky Terrain",
+      "is_free": true,
+      "unlock_requirement": "none",
+      "difficulty": 0.3,
+      "time_limit_seconds": 120,
+      "target_score": 300,
+      "obstacles": {
+        "type": "moving_platforms",
+        "count": 10,
+        "speed": 3
+      },
+      "collectibles": {
+        "type": "gems",
+        "count": 20,
+        "value": 30
+      },
+      "special_features": [
+        "rotating_platforms"
+      ],
+      "background_theme": "rocky_cliffs",
+      "music_track": "level_3_theme"
+    },
+    {
+      "level_number": 4,
+      "name": "Treacherous Peaks",
+      "is_free": false,
+      "unlock_requirement": "rewarded_ad",
+      "difficulty": 0.4,
+      "time_limit_seconds": 150,
+      "target_score": 500,
+      "obstacles": {
+        "type": "moving_platforms",
+        "count": 15,
+        "speed": 4
+      },
+      "collectibles": {
+        "type": "gems",
+        "count": 25,
+        "value": 40
+      },
+      "special_features": [
+        "disappearing_platforms"
+      ],
+      "background_theme": "rocky_cliffs",
+      "music_track": "level_4_theme"
+    },
+    {
+      "level_number": 5,
+      "name": "Dizzying Descent",
+      "is_free": false,
+      "unlock_requirement": "rewarded_ad",
+      "difficulty": 0.5,
+      "time_limit_seconds": 180,
+      "target_score": 750,
+      "obstacles": {
+        "type": "moving_platforms",
+        "count": 20,
+        "speed": 5
+      },
+      "collectibles": {
+        "type": "gems",
+        "count": 30,
+        "value": 50
+      },
+      "special_features": [
+        "spinning_platforms"
+      ],
+      "background_theme": "rocky_cliffs",
+      "music_track": "level_5_theme"
+    },
+    {
+      "level_number": 6,
+      "name": "Perilous Passage",
+      "is_free": false,
+      "unlock_requirement": "rewarded_ad",
+      "difficulty": 0.6,
+      "time_limit_seconds": 210,
+      "target_score": 1000,
+      "obstacles": {
+        "type": "moving_platforms",
+        "count": 25,
+        "speed": 6
+      },
+      "collectibles": {
+        "type": "gems",
+        "count": 35,
+        "value": 60
+      },
+      "special_features": [
+        "disappearing_platforms",
+        "rotating_platforms"
+      ],
+      "background_theme": "icy_tundra",
+      "music_track": "level_6_theme"
+    },
+    {
+      "level_number": 7,
+      "name": "Frozen Freefall",
+      "is_free": false,
+      "unlock_requirement": "rewarded_ad",
+      "difficulty": 0.7,
+      "time_limit_seconds": 240,
+      "target_score": 1250,
+      "obstacles": {
+        "type": "moving_platforms",
+        "count": 30,
+        "speed": 7
+      },
+      "collectibles": {
+        "type": "gems",
+        "count": 40,
+        "value": 70
+      },
+      "special_features": [
+        "disappearing_platforms",
+        "spinning_platforms"
+      ],
+      "background_theme": "icy_tundra",
+      "music_track": "level_7_theme"
+    },
+    {
+      "level_number": 8,
+      "name": "Chilling Challenge",
+      "is_free": false,
+      "unlock_requirement": "rewarded_ad",
+      "difficulty": 0.8,
+      "time_limit_seconds": 270,
+      "target_score": 1500,
+      "obstacles": {
+        "type": "moving_platforms",
+        "count": 35,
+        "speed": 8
+      },
+      "collectibles": {
+        "type": "gems",
+        "count": 45,
+        "value": 80
+      },
+      "special_features": [
+        "disappearing_platforms",
+        "rotating_platforms",
+        "spinning_platforms"
+      ],
+      "background_theme": "icy_tundra",
+      "music_track": "level_8_theme"
+    },
+    {
+      "level_number": 9,
+      "name": "Frigid Finale",
+      "is_free": false,
+      "unlock_requirement": "rewarded_ad",
+      "difficulty": 0.9,
+      "time_limit_seconds": 300,
+      "target_score": 2000,
+      "obstacles": {
+        "type": "moving_platforms",
+        "count": 40,
+        "speed": 9
+      },
+      "collectibles": {
+        "type": "gems",
+        "count": 50,
+        "value": 90
+      },
+      "special_features": [
+        "disappearing_platforms",
+        "rotating_platforms",
+        "spinning_platforms"
+      ],
+      "background_theme": "icy_tundra",
+      "music_track": "level_9_theme"
+    },
+    {
+      "level_number": 10,
+      "name": "Treacherous Traverse",
+      "is_free": false,
+      "unlock_requirement": "rewarded_ad",
+      "difficulty": 1.0,
+      "time_limit_seconds": null,
+      "target_score": 3000,
+      "obstacles": {
+        "type": "moving_platforms",
+        "count": 45,
+        "speed": 10
+      },
+      "collectibles": {
+        "type": "gems",
+        "count": 55,
+        "value": 100
+      },
+      "special_features": [
+        "disappearing_platforms",
+        "rotating_platforms",
+        "spinning_platforms"
+      ],
+      "background_theme": "icy_tundra",
+      "music_track": "level_10_theme"
+    }
+  ]
+}
