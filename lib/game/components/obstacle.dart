@@ -1,42 +1,44 @@
 import 'package:flame/components.dart';
-import 'package:flame/geometry.dart';
+import 'package:flame/collisions.dart';
 import 'package:flutter/material.dart';
 
-/// A component representing an obstacle in a platformer game.
-/// It includes a visual representation, collision detection, and damage dealing behavior.
-class Obstacle extends PositionComponent with HasGameRef, Hitbox, Collidable {
-  final Vector2 _size;
-  final Paint _paint;
-  final double _damage;
+class Obstacle extends PositionComponent with CollisionCallbacks {
+  final double moveSpeed;
+  final Vector2 direction;
 
-  /// Creates a new obstacle component.
-  /// 
-  /// [size] specifies the size of the obstacle.
-  /// [color] specifies the color of the obstacle for its visual representation.
-  /// [damage] specifies the amount of damage the obstacle deals on collision.
   Obstacle({
+    required Vector2 position,
     required Vector2 size,
-    required Color color,
-    double damage = 1.0,
-  })  : _size = size,
-        _damage = damage,
-        _paint = Paint()..color = color {
-    addShape(HitboxRectangle());
-  }
+    this.moveSpeed = 150,
+    this.direction = const Vector2(0, 1),
+  }) : super(
+          position: position,
+          size: size,
+          anchor: Anchor.center,
+        );
 
   @override
   Future<void> onLoad() async {
-    super.onLoad();
-    size = _size;
-    anchor = Anchor.center;
+    await super.onLoad();
+    add(RectangleHitbox());
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    position += direction * moveSpeed * dt;
+    
+    if (position.y > 900 || position.y < -100 ||
+        position.x > 500 || position.x < -100) {
+      removeFromParent();
+    }
   }
 
   @override
   void render(Canvas canvas) {
-    super.render(canvas);
-    canvas.drawRect(size.toRect(), _paint);
+    canvas.drawRect(
+      size.toRect(),
+      Paint()..color = Colors.red,
+    );
   }
-
-  /// Gets the damage dealt by the obstacle.
-  double get damage => _damage;
 }

@@ -1,29 +1,31 @@
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
-import 'package:flame/input.dart';
-import 'package:flutter/services.dart';
+import 'package:flame/sprite.dart';
 
-class Player extends SpriteAnimationComponent
-    with HasGameRef, Hitbox, Collidable, KeyboardHandler {
-  double speed = 150.0;
-  Vector2 velocity = Vector2.zero();
+class Player extends SpriteAnimationComponent with HasGameRef, Hitbox, Collidable {
+  double speed = 200.0;
+  Vector2 direction = Vector2.zero();
   bool isJumping = false;
-  int health = 3;
-  int score = 0;
+  final double jumpSpeed = -300;
+  final double gravity = 1000;
+  double health = 100;
+  bool isInvulnerable = false;
+  final double invulnerabilityTime = 2.0; // seconds
+  double currentInvulnerabilityTime = 0;
 
-  Player() : super(size: Vector2(50.0, 75.0)) {
+  Player()
+      : super(size: Vector2(48, 48), anchor: Anchor.center) {
     addHitbox(HitboxRectangle());
   }
 
   @override
-  Future<void>? onLoad() async {
-    await super.onLoad();
+  Future<void> onLoad() async {
     animation = await gameRef.loadSpriteAnimation(
       'player.png',
       SpriteAnimationData.sequenced(
         amount: 4,
         stepTime: 0.1,
-        textureSize: Vector2(50.0, 75.0),
+        textureSize: Vector2(48, 48),
       ),
     );
   }
@@ -31,72 +33,81 @@ class Player extends SpriteAnimationComponent
   @override
   void update(double dt) {
     super.update(dt);
-    position += velocity * dt;
+    handleMovement(dt);
+    handleJump(dt);
+    handleInvulnerability(dt);
+  }
 
-    // Gravity
-    if (!isJumping) {
-      velocity.y += 500 * dt;
-    }
+  void handleMovement(double dt) {
+    position.add(direction * speed * dt);
+    direction = Vector2.zero();
+  }
 
-    // Screen bounds check
-    if (position.y > gameRef.size.y - size.y) {
-      position.y = gameRef.size.y - size.y;
-      isJumping = false;
+  void handleJump(double dt) {
+    if (isJumping) {
+      speed += gravity * dt;
+    } else {
+      speed = 0;
     }
+    position.y += speed * dt;
   }
 
   void jump() {
     if (!isJumping) {
-      velocity.y = -300;
       isJumping = true;
+      speed = jumpSpeed;
     }
   }
 
   void moveLeft() {
-    velocity.x = -speed;
+    direction = Vector2(-1, 0);
   }
 
   void moveRight() {
-    velocity.x = speed;
-  }
-
-  void stop() {
-    velocity.x = 0;
-  }
-
-  @override
-  bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    if (event is RawKeyDownEvent) {
-      if (keysPressed.contains(LogicalKeyboardKey.arrowUp)) {
-        jump();
-      } else if (keysPressed.contains(LogicalKeyboardKey.arrowLeft)) {
-        moveLeft();
-      } else if (keysPressed.contains(LogicalKeyboardKey.arrowRight)) {
-        moveRight();
-      }
-    } else if (event is RawKeyUpEvent) {
-      if (!keysPressed.contains(LogicalKeyboardKey.arrowLeft) &&
-          !keysPressed.contains(LogicalKeyboardKey.arrowRight)) {
-        stop();
-      }
-    }
-    return super.onKeyEvent(event, keysPressed);
+    direction = Vector2(1, 0);
   }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
-    super.onCollision(intersectionPoints, other);
-    // Handle collision with obstacles or enemies
-    if (other is Enemy) {
-      health -= 1;
-      if (health <= 0) {
-        removeFromParent();
-        // Optionally, trigger game over or respawn logic here
+    if (other is Obstacle && !isInvulnerable) {
+      takeDamage(20);
+    } else if (other is Collectible) {
+      collectItem(other);
+    }
+  }
+
+  void takeDamage(double damage) {
+    if (!isInvulnerable) {
+      health -= damage;
+      isInvulnerable = true;
+      currentInvulnerabilityTime = invulnerabilityTime;
+    }
+  }
+
+  void handleInvulnerability(double dt) {
+    if (isInvulnerable) {
+      currentInvulnerabilityTime -= dt;
+      if (currentInvulnerabilityTime <= 0) {
+        isInvulnerable = false;
       }
     }
   }
 
-  void increaseScore(int points) {
-    score += points;
+  void collectItem(Collectible item) {
+    // Implement item collection logic
+  }
+
+  bool get isAlive => health > 0;
+}
+
+class Obstacle extends SpriteComponent with Hitbox, Collidable {
+  Obstacle() {
+    addHitbox(HitboxRectangle());
+  }
+}
+
+class Collectible extends SpriteComponent with Hitbox, Collidable {
+  Collectible() {
+    addHitbox(HitboxRectangle());
   }
 }

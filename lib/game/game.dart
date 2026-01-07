@@ -5,85 +5,83 @@ import 'package:flame/input.dart';
 enum GameState { playing, paused, gameOver, levelComplete }
 
 class TestClaudeLatestPlatformer01Game extends FlameGame with TapDetector {
-  GameState _gameState = GameState.playing;
-  int _currentLevel = 1;
-  int _score = 0;
+  final Vector2 _worldSize = Vector2(320, 180);
+  GameState gameState = GameState.playing;
+  int score = 0;
+  int lives = 3;
+  late AnalyticsService analyticsService;
 
   @override
   Future<void> onLoad() async {
-    super.onLoad();
-    // Load initial level, player, and UI overlays
-    await loadLevel(_currentLevel);
+    camera.viewport = FixedResolutionViewport(_worldSize);
+    add(GameController(this));
+    analyticsService = AnalyticsService();
+    analyticsService.logEvent('game_start');
+    loadLevel(1);
   }
 
-  /// Handles tap inputs to make the player jump
+  void loadLevel(int levelNumber) {
+    // Placeholder for level loading logic
+    // This should include setting up the level layout, player, and obstacles
+    analyticsService.logEvent('level_start', parameters: {'level': levelNumber});
+  }
+
   @override
   void onTap() {
-    if (_gameState == GameState.playing) {
-      // Implement player jump logic
+    // Placeholder for player jump logic
+    // This should make the player's character jump if the game state is playing
+    if (gameState == GameState.playing) {
+      // Player jump logic here
     }
   }
 
-  /// Loads the specified level and initializes necessary components
-  Future<void> loadLevel(int levelNumber) async {
-    // Implement level loading logic
-    // Reset score and other level-specific states
-    _score = 0;
-    // Load level components like platforms, obstacles, and collectibles
-  }
-
-  /// Updates the game state
-  void updateGameState(GameState newState) {
-    _gameState = newState;
-    switch (_gameState) {
-      case GameState.playing:
-        // Resume gameplay
-        break;
-      case GameState.paused:
-        // Pause gameplay and show pause menu
-        overlays.add('PauseMenu');
-        break;
-      case GameState.gameOver:
-        // Handle game over logic
-        overlays.add('GameOverMenu');
-        break;
-      case GameState.levelComplete:
-        // Handle level completion logic
-        overlays.add('LevelCompleteMenu');
-        break;
-    }
-  }
-
-  /// Increments the player's score
-  void increaseScore(int points) {
-    _score += points;
+  void updateScore(int points) {
+    score += points;
     // Update score display
+    // Placeholder for UI update logic
   }
 
-  /// Handles game over scenarios
-  void gameOver() {
-    updateGameState(GameState.gameOver);
-    // Implement game over logic, such as saving scores, showing ads, etc.
-  }
-
-  /// Proceeds to the next level or finishes the game if all levels are complete
-  void nextLevel() {
-    if (_currentLevel < 10) {
-      _currentLevel++;
-      loadLevel(_currentLevel);
-      updateGameState(GameState.playing);
+  void loseLife() {
+    lives--;
+    if (lives <= 0) {
+      gameState = GameState.gameOver;
+      analyticsService.logEvent('level_fail');
+      // Show game over overlay
     } else {
-      // Implement game completion logic
+      // Restart level or respawn player
     }
   }
 
-  /// Pauses the game
-  void pauseGame() {
-    updateGameState(GameState.paused);
+  void levelComplete() {
+    gameState = GameState.levelComplete;
+    analyticsService.logEvent('level_complete');
+    // Show level complete overlay
   }
 
-  /// Resumes the game from a paused state
-  void resumeGame() {
-    updateGameState(GameState.playing);
+  void handleCollision() {
+    // Placeholder for collision handling logic
+    // This should check for collisions between the player and obstacles or platforms
+    // On collision with obstacle, call loseLife()
+    // On reaching the end point, call levelComplete()
+  }
+}
+
+class GameController extends Component {
+  TestClaudeLatestPlatformer01Game gameRef;
+
+  GameController(this.gameRef);
+
+  @override
+  void update(double dt) {
+    if (gameRef.gameState == GameState.playing) {
+      gameRef.handleCollision();
+    }
+  }
+}
+
+class AnalyticsService {
+  void logEvent(String eventName, {Map<String, dynamic>? parameters}) {
+    // Placeholder for analytics event logging
+    // This should log game events to the analytics platform
   }
 }
